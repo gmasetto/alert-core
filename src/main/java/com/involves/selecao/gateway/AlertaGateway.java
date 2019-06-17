@@ -8,5 +8,7 @@ public interface AlertaGateway {
 	
 	void salvar(Alerta alerta);
 
-	List<Alerta> buscarTodos();
+	public List<Alerta> buscar(int page, int size);
+	
+	public long alertasTotalizador();
 }

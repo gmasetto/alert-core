@@ -14,8 +14,12 @@ public class BuscaAlertasService {
 	@Autowired
 	private AlertaGateway gateway;
 	
-	public List<Alerta> buscarTodos() {
-		return gateway.buscarTodos();
+	public List<Alerta> buscar(int page, int size) {
+		return gateway.buscar(page, size);
+	}
+	
+	public long alertasTotalizador() {
+		return gateway.alertasTotalizador();
 	}
 
 }

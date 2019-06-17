@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.involves.selecao.alerta.Alerta;
 import com.involves.selecao.gateway.mongo.MongoDbFactory;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 @Component
@@ -23,6 +23,7 @@ public class AlertaMongoGateway implements AlertaGateway{
 	public void salvar(Alerta alerta) {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("Alertas");
+		
 		Document doc = new Document("ponto_de_venda", alerta.getPontoDeVenda())
                 .append("descricao", alerta.getDescricao())
                 .append("tipo", alerta.getFlTipo())
@@ -30,14 +31,23 @@ public class AlertaMongoGateway implements AlertaGateway{
                 .append("produto", alerta.getProduto());
 		collection.insertOne(doc);
 	}
-
+	
 	@Override
-	public List<Alerta> buscarTodos() {
+	public long alertasTotalizador() {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("Alertas");
-		FindIterable<Document> db = collection.find();
+		return collection.count();
+	}
+
+	@Override
+	public List<Alerta> buscar(int page, int size) {
+		MongoDatabase database = mongoFactory.getDb();
+		MongoCollection<Document> collection = database.getCollection("Alertas");
+        
+        List<Document> results = pagination(collection, page, size);       
+		
 		List<Alerta> alertas = new ArrayList<>();
-		for (Document document : db) {
+		for (Document document : results) {
 			Alerta alerta = new Alerta();
 			alerta.setDescricao(document.getString("descricao"));
 			alerta.setFlTipo(document.getInteger("tipo"));
@@ -46,6 +56,27 @@ public class AlertaMongoGateway implements AlertaGateway{
 			alerta.setProduto(document.getString("produto"));
 			alertas.add(alerta);
 		}
+		
 		return alertas;
 	}
+	
+    public List<Document> pagination(MongoCollection <Document> document, int page, int size) { 
+    	List<Document> results = null;
+    	try {
+            MongoCursor <Document> cursor = document.find().skip(size * (page - 1)).limit(size).iterator();
+            results = new ArrayList<>();
+            
+            while (cursor.hasNext()) {
+                Document result = cursor.next();
+                results.add(result);
+            }
+            cursor.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return results;
+        
+    }
 }
