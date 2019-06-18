@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.involves.selecao.alerta.TipoAlerta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +12,10 @@ import com.google.gson.Gson;
 import com.involves.selecao.alerta.Alerta;
 import com.involves.selecao.alerta.Pesquisa;
 import com.involves.selecao.alerta.Resposta;
+import com.involves.selecao.alerta.TipoAlerta;
+import com.involves.selecao.alerta.mensagem.Mensagem;
+import com.involves.selecao.alerta.mensagem.MensagemDiferencaValor;
+import com.involves.selecao.alerta.mensagem.MensagemPadrao;
 import com.involves.selecao.gateway.AlertaGateway;
 
 @Service
@@ -40,75 +43,23 @@ public class ProcessadorAlertas {
 		for (int i = 0; i < ps.length; i++){
 			for (int j = 0; j < ps[i].getRespostas().size(); j++){
 				Resposta resposta = ps[i].getRespostas().get(j);
-				System.out.println("###################");
-				System.out.println(resposta.getPergunta());
-				System.out.println(resposta.getResposta());								
-				System.out.println("******************");
-
-				TipoAlerta alerta = gateway.buscarTipoAlerta(resposta.getPergunta());
-
-				if (alerta != null) {
-					System.out.println("Entro aqui e funcionou");
+				
+				TipoAlerta tipoAlerta = gateway.buscarTipoAlerta(resposta.getPergunta());
+				Mensagem mensagem = null;
+				
+				if (tipoAlerta != null) {
+					if (tipoAlerta.isCompararValor()) {
+						mensagem = new MensagemDiferencaValor();
+						Alerta alerta = mensagem.gerarAlerta(ps[i], resposta, tipoAlerta);
+						gateway.salvar(alerta);
+					} else {
+						mensagem = new MensagemPadrao();
+						Alerta alerta = mensagem.gerarAlerta(ps[i], resposta, tipoAlerta);
+						gateway.salvar(alerta);
+					}
+				} else {
+					System.out.println("Alerta ainda n�o implementado!");
 				}
-
-
-//				if (resposta.getPergunta().equals("Qual a situação do produto?")) {
-//					if(resposta.getResposta().equals("Produto ausente na gondola")){
-//					    Alerta alerta = new Alerta();
-//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-//					    alerta.setDescricao("Ruptura detectada!");
-//					    alerta.setProduto(ps[i].getProduto());
-//					    alerta.setFlTipo(1);
-//					    gateway.salvar(alerta);
-//					}
-//				} else if(resposta.getPergunta().equals("Qual o preço do produto?")) {
-//					int precoColetado = Integer.parseInt(resposta.getResposta());
-//					int precoEstipulado = Integer.parseInt(ps[i].getPreco_estipulado());
-//					if(precoColetado > precoEstipulado){
-//					    Alerta alerta = new Alerta();
-//					    int margem = precoEstipulado - Integer.parseInt(resposta.getResposta());
-//					    alerta.setMargem(margem);
-//					    alerta.setDescricao("Preço acima do estipulado!");
-//					    alerta.setProduto(ps[i].getProduto());
-//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-//					    alerta.setFlTipo(2);
-//					    gateway.salvar(alerta);
-//					} else if(precoColetado < precoEstipulado){
-//						Alerta alerta = new Alerta();
-//					    int margem = precoEstipulado - Integer.parseInt(resposta.getResposta());
-//					    alerta.setMargem(margem);
-//					    alerta.setDescricao("Preço abaixo do estipulado!");
-//					    alerta.setProduto(ps[i].getProduto());
-//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-//					    alerta.setFlTipo(3);
-//					    gateway.salvar(alerta);
-//					}
-//				} else if(resposta.getPergunta().equals("%Share")) {
-//					int partipacaoEstipulada = Integer.parseInt(ps[i].getParticipacao_estipulada());
-//					int partipacaoColetado = Integer.parseInt(resposta.getResposta());
-//
-//					if(partipacaoColetado > partipacaoEstipulada){
-//					    Alerta alerta = new Alerta();
-//					    int margem = partipacaoEstipulada - partipacaoColetado;
-//					    alerta.setMargem(margem);
-//					    alerta.setDescricao("Participação acima do estipulado!");
-//					    alerta.setCategoria(ps[i].getCategoria());
-//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-//					    alerta.setFlTipo(4);
-//					    gateway.salvar(alerta);
-//					} else if(partipacaoColetado < partipacaoEstipulada) {
-//						Alerta alerta = new Alerta();
-//						int margem = partipacaoEstipulada - partipacaoColetado;
-//						alerta.setMargem(margem);
-//						alerta.setDescricao("Participação abaixo do estipulado!");
-//						alerta.setCategoria(ps[i].getCategoria());
-//						alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-//						alerta.setFlTipo(5);
-//						gateway.salvar(alerta);
-//					}
-//				} else {
-//					System.out.println("Alerta ainda não implementado!");
-//				}
 			} 
 		}
 	}

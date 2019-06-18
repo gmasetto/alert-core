@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.involves.selecao.alerta.Alerta;
+import com.involves.selecao.alerta.Evento;
 import com.involves.selecao.gateway.mongo.MongoDbFactory;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -51,25 +52,28 @@ public class AlertaMongoGateway implements AlertaGateway {
 		MongoCollection<Document> collection = database.getCollection("TipoAlerta");
 
 		Document doc = new Document(
-				"nome", tipoAlerta.getNome())
-				.append("descricao", tipoAlerta.getDescricao());
+				"alerta", tipoAlerta.getAlerta())				
+				.append("tipo", tipoAlerta.getEvento().getTipo())
+				.append("compararValor", tipoAlerta.isCompararValor())
+				.append("descricao", tipoAlerta.getEvento().getDescricao());	
 		collection.insertOne(doc);
 
-			return tipoAlerta;
+		return tipoAlerta;
 	}
 
 	@Override
-	public TipoAlerta buscarTipoAlerta(String nome) {
+	public TipoAlerta buscarTipoAlerta(String alerta) {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("TipoAlerta");
-		Bson query = eq("nome", nome);
+		Bson query = eq("alerta",alerta);
 		TipoAlerta tipoAlerta = null;
 
 		FindIterable<Document> list = collection.find(query);
 		for (Document doc : list) {
 			tipoAlerta = new TipoAlerta();
-			tipoAlerta.setNome(doc.getString("nome"));
-			tipoAlerta.setDescricao("descricao");
+			tipoAlerta.setAlerta(doc.getString("alerta"));
+			tipoAlerta.setCompararValor(doc.getBoolean("compararValor"));
+			tipoAlerta.setEvento(new Evento(doc.getInteger("tipo"), doc.getString("descricao")));
 		}
 
 		return tipoAlerta;

@@ -2,22 +2,32 @@ package com.involves.selecao.alerta;
 
 public class TipoAlerta {
 
-    private String nome;
-    private String descricao;
+	private String alerta;
+	private boolean compararValor;
+	private Evento evento;
+	
+	public String getAlerta() {
+		return alerta;
+	}
+	
+	public void setAlerta(String alerta) {
+		this.alerta = alerta;
+	}
+	
+	public Evento getEvento() {
+		return evento;
+	}
+	
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public boolean isCompararValor() {
+		return compararValor;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+	public void setCompararValor(boolean compararValor) {
+		this.compararValor = compararValor;
+	}
+	
 }
