@@ -36,6 +36,11 @@ public class AlertaController {
 		return buscaAlertasService.saveTipoAlerta(tipoAlerta);
 	}
 
+	@GetMapping("/tipo-alerta")
+	public TipoAlerta alertas(@RequestParam String nome) {
+		return buscaAlertasService.buscarTipoAlerta(nome);
+	}
+
 	@GetMapping("/processar")
     public void processar() {
 		try {

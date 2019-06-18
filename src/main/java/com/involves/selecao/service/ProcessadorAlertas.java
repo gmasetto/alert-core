@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.involves.selecao.alerta.TipoAlerta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,12 @@ public class ProcessadorAlertas {
 				System.out.println(resposta.getPergunta());
 				System.out.println(resposta.getResposta());								
 				System.out.println("******************");
+
+				TipoAlerta alerta = gateway.buscarTipoAlerta(resposta.getPergunta());
+
+				if (alerta != null) {
+					System.out.println("Entro aqui e funcionou");
+				}
 
 
 //				if (resposta.getPergunta().equals("Qual a situação do produto?")) {
