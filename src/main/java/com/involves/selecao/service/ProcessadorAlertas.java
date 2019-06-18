@@ -43,65 +43,65 @@ public class ProcessadorAlertas {
 				System.out.println(resposta.getPergunta());
 				System.out.println(resposta.getResposta());								
 				System.out.println("******************");
-				if (resposta.getPergunta().equals("Qual a situação do produto?")) {
-					if(resposta.getResposta().equals("Produto ausente na gondola")){
-					    Alerta alerta = new Alerta();
-					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-					    alerta.setDescricao("Ruptura detectada!");
-					    alerta.setProduto(ps[i].getProduto());
-					    alerta.setFlTipo(1);
-					    gateway.salvar(alerta);
-					}
-				} else if(resposta.getPergunta().equals("Qual o preço do produto?")) {
-					int precoColetado = Integer.parseInt(resposta.getResposta());
-					int precoEstipulado = Integer.parseInt(ps[i].getPreco_estipulado());
-					if(precoColetado > precoEstipulado){
-					    Alerta alerta = new Alerta();
-					    int margem = precoEstipulado - Integer.parseInt(resposta.getResposta());
-					    alerta.setMargem(margem);
-					    alerta.setDescricao("Preço acima do estipulado!");
-					    alerta.setProduto(ps[i].getProduto());
-					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-					    alerta.setFlTipo(2);
-					    gateway.salvar(alerta);
-					} else if(precoColetado < precoEstipulado){
-						Alerta alerta = new Alerta();
-					    int margem = precoEstipulado - Integer.parseInt(resposta.getResposta());
-					    alerta.setMargem(margem);
-					    alerta.setDescricao("Preço abaixo do estipulado!");
-					    alerta.setProduto(ps[i].getProduto());
-					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-					    alerta.setFlTipo(3);
-					    gateway.salvar(alerta);
-					}
-				} else if(resposta.getPergunta().equals("%Share")) {
-					int partipacaoEstipulada = Integer.parseInt(ps[i].getParticipacao_estipulada());
-					int partipacaoColetado = Integer.parseInt(resposta.getResposta());
-					
-					if(partipacaoColetado > partipacaoEstipulada){
-					    Alerta alerta = new Alerta();
-					    int margem = partipacaoEstipulada - partipacaoColetado;
-					    alerta.setMargem(margem);
-					    alerta.setDescricao("Participação acima do estipulado!");
-					    alerta.setCategoria(ps[i].getCategoria());
-					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-					    alerta.setFlTipo(2);
-					    gateway.salvar(alerta);
-					} else if(partipacaoColetado < partipacaoEstipulada){
-						Alerta alerta = new Alerta();
-					    int margem = partipacaoEstipulada - partipacaoColetado;
-					    alerta.setMargem(margem);
-					    alerta.setDescricao("Participação abaixo do estipulado!");
-					    alerta.setCategoria(ps[i].getCategoria());
-					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
-					    alerta.setFlTipo(3);
-					    gateway.salvar(alerta);
-					}
-					
-					
-				} else {
-					System.out.println("Alerta ainda não implementado!");
-				}
+
+
+//				if (resposta.getPergunta().equals("Qual a situaÃ§Ã£o do produto?")) {
+//					if(resposta.getResposta().equals("Produto ausente na gondola")){
+//					    Alerta alerta = new Alerta();
+//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
+//					    alerta.setDescricao("Ruptura detectada!");
+//					    alerta.setProduto(ps[i].getProduto());
+//					    alerta.setFlTipo(1);
+//					    gateway.salvar(alerta);
+//					}
+//				} else if(resposta.getPergunta().equals("Qual o preÃ§o do produto?")) {
+//					int precoColetado = Integer.parseInt(resposta.getResposta());
+//					int precoEstipulado = Integer.parseInt(ps[i].getPreco_estipulado());
+//					if(precoColetado > precoEstipulado){
+//					    Alerta alerta = new Alerta();
+//					    int margem = precoEstipulado - Integer.parseInt(resposta.getResposta());
+//					    alerta.setMargem(margem);
+//					    alerta.setDescricao("PreÃ§o acima do estipulado!");
+//					    alerta.setProduto(ps[i].getProduto());
+//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
+//					    alerta.setFlTipo(2);
+//					    gateway.salvar(alerta);
+//					} else if(precoColetado < precoEstipulado){
+//						Alerta alerta = new Alerta();
+//					    int margem = precoEstipulado - Integer.parseInt(resposta.getResposta());
+//					    alerta.setMargem(margem);
+//					    alerta.setDescricao("PreÃ§o abaixo do estipulado!");
+//					    alerta.setProduto(ps[i].getProduto());
+//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
+//					    alerta.setFlTipo(3);
+//					    gateway.salvar(alerta);
+//					}
+//				} else if(resposta.getPergunta().equals("%Share")) {
+//					int partipacaoEstipulada = Integer.parseInt(ps[i].getParticipacao_estipulada());
+//					int partipacaoColetado = Integer.parseInt(resposta.getResposta());
+//
+//					if(partipacaoColetado > partipacaoEstipulada){
+//					    Alerta alerta = new Alerta();
+//					    int margem = partipacaoEstipulada - partipacaoColetado;
+//					    alerta.setMargem(margem);
+//					    alerta.setDescricao("ParticipaÃ§Ã£o acima do estipulado!");
+//					    alerta.setCategoria(ps[i].getCategoria());
+//					    alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
+//					    alerta.setFlTipo(4);
+//					    gateway.salvar(alerta);
+//					} else if(partipacaoColetado < partipacaoEstipulada) {
+//						Alerta alerta = new Alerta();
+//						int margem = partipacaoEstipulada - partipacaoColetado;
+//						alerta.setMargem(margem);
+//						alerta.setDescricao("ParticipaÃ§Ã£o abaixo do estipulado!");
+//						alerta.setCategoria(ps[i].getCategoria());
+//						alerta.setPontoDeVenda(ps[i].getPonto_de_venda());
+//						alerta.setFlTipo(5);
+//						gateway.salvar(alerta);
+//					}
+//				} else {
+//					System.out.println("Alerta ainda nÃ£o implementado!");
+//				}
 			} 
 		}
 	}

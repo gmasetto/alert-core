@@ -2,6 +2,7 @@ package com.involves.selecao.service;
 
 import java.util.List;
 
+import com.involves.selecao.alerta.TipoAlerta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,7 @@ public class BuscaAlertasService {
 		return gateway.alertasTotalizador();
 	}
 
+	public TipoAlerta saveTipoAlerta(TipoAlerta tipoAlerta) {
+		 return gateway.saveTipoAlerta(tipoAlerta);
+	}
 }

@@ -3,11 +3,9 @@ package com.involves.selecao;
 import java.io.IOException;
 import java.util.List;
 
+import com.involves.selecao.alerta.TipoAlerta;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.involves.selecao.alerta.Alerta;
 import com.involves.selecao.service.BuscaAlertasService;
@@ -32,7 +30,12 @@ public class AlertaController {
     public long alertasToalizador() {
 		return buscaAlertasService.alertasTotalizador();
 	}
-	
+
+	@PostMapping("/tipo-alerta")
+	public TipoAlerta salvarTipoAlerta(@RequestBody TipoAlerta tipoAlerta) {
+		return buscaAlertasService.saveTipoAlerta(tipoAlerta);
+	}
+
 	@GetMapping("/processar")
     public void processar() {
 		try {
