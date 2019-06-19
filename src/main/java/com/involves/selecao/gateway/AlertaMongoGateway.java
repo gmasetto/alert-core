@@ -17,6 +17,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.regex;
 
 @Component
 public class AlertaMongoGateway implements AlertaGateway {
@@ -65,7 +66,7 @@ public class AlertaMongoGateway implements AlertaGateway {
 	public TipoAlerta buscarTipoAlerta(String alerta) {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("TipoAlerta");
-		Bson query = eq("alerta",alerta);
+		Bson query = eq("alerta", alerta);
 		TipoAlerta tipoAlerta = null;
 
 		FindIterable<Document> list = collection.find(query);
@@ -80,11 +81,16 @@ public class AlertaMongoGateway implements AlertaGateway {
 	}
 
 	@Override
-	public List<Alerta> buscar(int page, int size) {
+	public List<Alerta> buscar(String produto, String pdv, int page, int size) {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("Alertas");
-        
-        List<Document> results = pagination(collection, page, size);       
+		Bson query = null;
+
+		query = regex("produto", produto);
+
+		query = regex("pdv", "");
+
+        List<Document> results = pagination(collection, query, page, size);
 		
 		List<Alerta> alertas = new ArrayList<>();
 		for (Document document : results) {
@@ -100,10 +106,11 @@ public class AlertaMongoGateway implements AlertaGateway {
 		return alertas;
 	}
 	
-    public List<Document> pagination(MongoCollection <Document> document, int page, int size) { 
+    public List<Document> pagination(MongoCollection <Document> document, Bson query, int page, int size) {
     	List<Document> results = null;
+
     	try {
-            MongoCursor <Document> cursor = document.find().skip(size * (page - 1)).limit(size).iterator();
+            MongoCursor <Document> cursor = document.find(query).skip(size * (page - 1)).limit(size).iterator();
             results = new ArrayList<>();
             
             while (cursor.hasNext()) {

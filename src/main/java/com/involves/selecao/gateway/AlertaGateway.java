@@ -9,7 +9,7 @@ public interface AlertaGateway {
 	
 	public void salvar(Alerta alerta);
 
-	public List<Alerta> buscar(int page, int size);
+	public List<Alerta> buscar(String produto, String pdv, int page, int size);
 	
 	public long alertasTotalizador();
 

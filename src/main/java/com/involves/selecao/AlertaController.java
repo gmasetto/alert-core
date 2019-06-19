@@ -22,8 +22,12 @@ public class AlertaController {
 	private ProcessadorAlertas processador;
 	
 	@GetMapping
-    public List<Alerta> alertas(@RequestParam int page, @RequestParam int size) {
-		return buscaAlertasService.buscar(page, size);
+    public List<Alerta> alertas(@RequestParam int page,
+								@RequestParam int size,
+								@RequestParam(required = false) String produto,
+								@RequestParam(required = false) String pdv) {
+
+		return buscaAlertasService.buscar(produto, pdv, page, size);
     }
 	
 	@GetMapping("/totalizador")
