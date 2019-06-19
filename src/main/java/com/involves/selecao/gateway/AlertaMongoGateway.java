@@ -16,8 +16,9 @@ import com.involves.selecao.gateway.mongo.MongoDbFactory;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.regex;
+import com.mongodb.client.model.Filters;
+import java.util.regex.Pattern;
+
 
 @Component
 public class AlertaMongoGateway implements AlertaGateway {
@@ -61,16 +62,41 @@ public class AlertaMongoGateway implements AlertaGateway {
 
 		return tipoAlerta;
 	}
+	
+	@Override
+	public List<TipoAlerta> buscarTiposAlertas() {
+		MongoDatabase database = mongoFactory.getDb();
+		MongoCollection<Document> collection = database.getCollection("TipoAlerta");
+		List<TipoAlerta> tiposAlertas = new ArrayList<>();
+		
+		TipoAlerta tipoAlerta = null;
+				
+		FindIterable<Document> docs = collection.find();
+		
+		for (Document doc : docs) {
+			tipoAlerta = new TipoAlerta();
+			tipoAlerta.setAlerta(doc.getString("alerta"));
+			tipoAlerta.setCompararValor(doc.getBoolean("compararValor"));
+			tipoAlerta.setEvento(new Evento(doc.getInteger("tipo"), doc.getString("descricao")));
+			
+			tiposAlertas.add(tipoAlerta);
+		}
+
+		return tiposAlertas;
+	}
+	
 
 	@Override
 	public TipoAlerta buscarTipoAlerta(String alerta) {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("TipoAlerta");
-		Bson query = eq("alerta", alerta);
+		
 		TipoAlerta tipoAlerta = null;
-
-		FindIterable<Document> list = collection.find(query);
-		for (Document doc : list) {
+				
+		Bson query = Filters.eq("alerta", alerta);
+		FindIterable<Document> tiposAlertas = collection.find(query);
+		
+		for (Document doc : tiposAlertas) {
 			tipoAlerta = new TipoAlerta();
 			tipoAlerta.setAlerta(doc.getString("alerta"));
 			tipoAlerta.setCompararValor(doc.getBoolean("compararValor"));
@@ -85,10 +111,16 @@ public class AlertaMongoGateway implements AlertaGateway {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("Alertas");
 		Bson query = null;
-
-		query = regex("produto", produto);
-
-		query = regex("pdv", "");
+		
+		if (produto != null) {
+			Pattern pattern = Pattern.compile(produto, Pattern.CASE_INSENSITIVE);
+			query = Filters.regex("produto", pattern);
+		}
+		
+		if (pdv != null) {
+			Pattern pattern = Pattern.compile(pdv, Pattern.CASE_INSENSITIVE);
+			query = Filters.regex("ponto_de_venda", pattern);
+		}
 
         List<Document> results = pagination(collection, query, page, size);
 		
@@ -108,10 +140,16 @@ public class AlertaMongoGateway implements AlertaGateway {
 	
     public List<Document> pagination(MongoCollection <Document> document, Bson query, int page, int size) {
     	List<Document> results = null;
+    	MongoCursor <Document> cursor = null;
 
     	try {
-            MongoCursor <Document> cursor = document.find(query).skip(size * (page - 1)).limit(size).iterator();
-            results = new ArrayList<>();
+    		results = new ArrayList<>();
+    	
+    		if (query != null) {
+    			cursor = document.find(query).skip(size * (page - 1)).limit(size).iterator();
+    		} else {
+    			cursor = document.find().skip(size * (page - 1)).limit(size).iterator();
+    		}
             
             while (cursor.hasNext()) {
                 Document result = cursor.next();

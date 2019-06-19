@@ -30,4 +30,8 @@ public class BuscaAlertasService {
 	public TipoAlerta buscarTipoAlerta(String alerta) {
 		return gateway.buscarTipoAlerta(alerta);
 	}
+	
+	public List<TipoAlerta> buscarTiposAlertas() {
+		return gateway.buscarTiposAlertas();
+	}
 }

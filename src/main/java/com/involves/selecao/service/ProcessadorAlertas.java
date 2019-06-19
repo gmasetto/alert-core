@@ -44,6 +44,11 @@ public class ProcessadorAlertas {
 			for (int j = 0; j < ps[i].getRespostas().size(); j++){
 				Resposta resposta = ps[i].getRespostas().get(j);
 				
+				System.out.println("****");
+				System.out.println(resposta.getPergunta());
+				System.out.println(resposta.getResposta());
+				System.out.println("****");
+				
 				TipoAlerta tipoAlerta = gateway.buscarTipoAlerta(resposta.getPergunta());
 				Mensagem mensagem = null;
 				
@@ -58,7 +63,7 @@ public class ProcessadorAlertas {
 						gateway.salvar(alerta);
 					}
 				} else {
-					System.out.println("Alerta ainda nÃ£o implementado!");
+					System.out.println("Alerta ainda não implementado!");
 				}
 			} 
 		}

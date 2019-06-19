@@ -16,5 +16,7 @@ public interface AlertaGateway {
 	public TipoAlerta saveTipoAlerta(TipoAlerta tipoAlerta);
 
 	public TipoAlerta buscarTipoAlerta(String alerta);
+	
+	public List<TipoAlerta> buscarTiposAlertas();
 
 }
