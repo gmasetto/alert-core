@@ -26,6 +26,10 @@ public class BuscaAlertasService {
 	public TipoAlerta saveTipoAlerta(TipoAlerta tipoAlerta) {
 		 return gateway.saveTipoAlerta(tipoAlerta);
 	}
+	
+	public TipoAlerta removeTipoAlerta(String name) {
+		return gateway.removeTipoAlerta(name);
+	}
 
 	public TipoAlerta buscarTipoAlerta(String alerta) {
 		return gateway.buscarTipoAlerta(alerta);

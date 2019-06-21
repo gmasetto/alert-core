@@ -18,5 +18,7 @@ public interface AlertaGateway {
 	public TipoAlerta buscarTipoAlerta(String alerta);
 	
 	public List<TipoAlerta> buscarTiposAlertas();
+	
+	public TipoAlerta removeTipoAlerta(String alerta);
 
 }

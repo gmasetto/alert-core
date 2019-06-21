@@ -39,6 +39,11 @@ public class AlertaController {
 	public TipoAlerta salvarTipoAlerta(@RequestBody TipoAlerta tipoAlerta) {
 		return buscaAlertasService.saveTipoAlerta(tipoAlerta);
 	}
+	
+	@DeleteMapping("/tipo-alerta")
+	public TipoAlerta removeAlerta(@RequestParam String alerta) {
+		return buscaAlertasService.removeTipoAlerta(alerta);
+	}
 
 	@GetMapping("/tipo-alerta")
 	public TipoAlerta alertas(@RequestParam String alerta) {

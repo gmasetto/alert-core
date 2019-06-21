@@ -17,6 +17,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
+
 import java.util.regex.Pattern;
 
 
@@ -85,6 +87,24 @@ public class AlertaMongoGateway implements AlertaGateway {
 		return tiposAlertas;
 	}
 	
+
+	@Override
+	public TipoAlerta removeTipoAlerta(String alerta) {
+		MongoDatabase database = mongoFactory.getDb();
+		MongoCollection<Document> collection = database.getCollection("TipoAlerta");
+			
+		TipoAlerta removeTipoAlerta = buscarTipoAlerta(alerta);
+		
+		Bson query = Filters.eq("alerta", alerta);
+		DeleteResult result = collection.deleteOne(query);		
+		
+		if (result.wasAcknowledged()) { 
+			return removeTipoAlerta; 
+		} 	
+		
+		return removeTipoAlerta;
+		
+	}
 
 	@Override
 	public TipoAlerta buscarTipoAlerta(String alerta) {
