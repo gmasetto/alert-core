@@ -63,7 +63,7 @@ public class ProcessadorAlertas {
 						gateway.salvar(alerta);
 					}
 				} else {
-					System.out.println("Alerta ainda n„o implementado!");
+					System.out.println("Alerta ainda n√£o implementado!");
 				}
 			} 
 		}
