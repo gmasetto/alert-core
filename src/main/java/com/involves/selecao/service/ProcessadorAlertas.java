@@ -43,12 +43,7 @@ public class ProcessadorAlertas {
 		for (int i = 0; i < ps.length; i++){
 			for (int j = 0; j < ps[i].getRespostas().size(); j++){
 				Resposta resposta = ps[i].getRespostas().get(j);
-				
-				System.out.println("****");
-				System.out.println(resposta.getPergunta());
-				System.out.println(resposta.getResposta());
-				System.out.println("****");
-				
+
 				TipoAlerta tipoAlerta = gateway.buscarTipoAlerta(resposta.getPergunta());
 				Mensagem mensagem = null;
 				
