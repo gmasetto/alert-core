@@ -22,8 +22,8 @@ public class AlertaController {
 	private ProcessadorAlertas processador;
 	
 	@GetMapping
-    public List<Alerta> alertas(@RequestParam int page,
-								@RequestParam int size,
+    public List<Alerta> alertas(@PathVariable("page") int page,
+								@PathVariable("size") int size,
 								@RequestParam(required = false) String produto,
 								@RequestParam(required = false) String pdv) {
 
