@@ -51,7 +51,7 @@ public class AlertaMongoGateway implements AlertaGateway {
 	}
 
 	@Override
-	public TipoAlerta saveTipoAlerta(TipoAlerta tipoAlerta) {
+	public TipoAlerta salvarTipoAlerta(TipoAlerta tipoAlerta) {
 		MongoDatabase database = mongoFactory.getDb();
 		MongoCollection<Document> collection = database.getCollection("TipoAlerta");
 

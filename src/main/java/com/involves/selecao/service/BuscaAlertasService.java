@@ -23,8 +23,8 @@ public class BuscaAlertasService {
 		return gateway.alertasTotalizador();
 	}
 
-	public TipoAlerta saveTipoAlerta(TipoAlerta tipoAlerta) {
-		 return gateway.saveTipoAlerta(tipoAlerta);
+	public TipoAlerta salvarTipoAlerta(TipoAlerta tipoAlerta) {
+		 return gateway.salvarTipoAlerta(tipoAlerta);
 	}
 	
 	public TipoAlerta removeTipoAlerta(String name) {

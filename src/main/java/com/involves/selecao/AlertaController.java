@@ -22,12 +22,12 @@ public class AlertaController {
 	private ProcessadorAlertas processador;
 	
 	@GetMapping
-    public List<Alerta> alertas(@PathVariable("page") int page,
-								@PathVariable("size") int size,
-								@RequestParam(required = false) String produto,
-								@RequestParam(required = false) String pdv) {
+    public List<Alerta> alertas(@RequestParam(value="page") int page,
+								@RequestParam(value="size") int size,
+								@RequestParam(value="produto", required = false) String produto,
+								@RequestParam(value="pdv", required = false) String pdv) {
 
-		return buscaAlertasService.buscar(produto, pdv, page, size);
+		return buscaAlertasService.buscar(produto, pdv, page,size);
     }
 	
 	@GetMapping("/totalizador")
@@ -37,21 +37,21 @@ public class AlertaController {
 
 	@PostMapping("/tipo-alerta")
 	public TipoAlerta salvarTipoAlerta(@RequestBody TipoAlerta tipoAlerta) {
-		return buscaAlertasService.saveTipoAlerta(tipoAlerta);
+		return buscaAlertasService.salvarTipoAlerta(tipoAlerta);
 	}
 	
 	@DeleteMapping("/tipo-alerta")
-	public TipoAlerta removeAlerta(@RequestParam String alerta) {
+	public TipoAlerta removeTipoAlerta(@RequestParam(value="alerta") String alerta) {
 		return buscaAlertasService.removeTipoAlerta(alerta);
 	}
 
 	@GetMapping("/tipo-alerta")
-	public TipoAlerta alertas(@RequestParam String alerta) {
+	public TipoAlerta buscarTipoAlerta(@RequestParam(value="alerta") String alerta) {
 		return buscaAlertasService.buscarTipoAlerta(alerta);
 	}
 	
 	@GetMapping("/tipos-alertas")
-	public List<TipoAlerta> buscaTiposAlertas() {
+	public List<TipoAlerta> buscarTiposAlertas() {
 		return buscaAlertasService.buscarTiposAlertas();
 	}
 

@@ -13,7 +13,7 @@ public interface AlertaGateway {
 	
 	public long alertasTotalizador();
 
-	public TipoAlerta saveTipoAlerta(TipoAlerta tipoAlerta);
+	public TipoAlerta salvarTipoAlerta(TipoAlerta tipoAlerta);
 
 	public TipoAlerta buscarTipoAlerta(String alerta);
 	
